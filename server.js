@@ -21,6 +21,23 @@ const server = net.createServer((client) => {
     client.on('end', () => Log(client, `Client №${client.id} disconnected`));
 });
 
+function send_answer(client, message){
+    if(/q:.*/.test(message)){
+        let rand = Math.random() * (3);
+        rand = Math.ceil(rand);
+        send_response(client, rand.toString());
+    }
+}
+
+function send_response(client, message){
+    Log(client, 'You: ' + message);
+    client.write(message);
+}
+
+function Log(client, message){
+    client.logger.write(message+'\n');
+    console.log('You: ' + message);
+}
 
 server.listen(port, () => {
     console.log(`Server listening on localhost:${port}`);
